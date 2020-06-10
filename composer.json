@@ -1,9 +1,9 @@
 {
-  "name": "customergauge/cognito",
-  "description": "AWS Cognito provider for Laravel Authentication",
+  "name": "customergauge/bref",
+  "description": "AWS Lambda with Bref Adapter for Laravel",
   "type": "library",
   "license": "MIT",
-  "keywords": ["laravel", "cognito", "aws", "authentication"],
+  "keywords": ["laravel", "bref", "aws", "lambda"],
   "authors": [
     {
       "name": "Marco Deleu",
