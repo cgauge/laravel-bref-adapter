@@ -15,7 +15,7 @@
 | Kernel without silencing the exceptions.
 */
 
-$app = require __DIR__ .'/boot.php';
+$app = require __DIR__ . '/boot.php';
 
 $handler = $app->make(\CustomerGauge\Bref\Kernel\SqsHandler::class);
 

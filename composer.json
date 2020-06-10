@@ -30,5 +30,11 @@
         "CustomerGauge\\Bref\\LaravelBrefServiceProvider"
       ]
     }
-  }
+  },
+  "bin": [
+    "handlers/invoke.php",
+    "handlers/queue.php",
+    "handlers/request.php",
+    "handlers/pipeline.php"
+  ]
 }

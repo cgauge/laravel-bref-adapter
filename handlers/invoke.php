@@ -10,7 +10,7 @@
 | will always be marked as failed.
 */
 
-$app = require __DIR__ .'/boot.php';
+$app = require __DIR__ . '/boot.php';
 
 return function (array $event) use ($app) {
     $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
@@ -23,12 +23,6 @@ return function (array $event) use ($app) {
         $input = new \CustomerGauge\Bref\Input\ArtisanLambdaInput,
         new \Symfony\Component\Console\Output\ConsoleOutput
     );
-
-    $jobId = $event['CodePipeline.job']['id'];
-
-    $pipeline = $app->make(\CustomerGauge\Bref\Helpers\CodepipelineAction::class);
-
-    $pipeline->notify($jobId, $status);
 
     $kernel->terminate($input, $status);
 };
