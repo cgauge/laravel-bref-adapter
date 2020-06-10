@@ -1,0 +1,39 @@
+{
+  "name": "customergauge/cognito",
+  "description": "AWS Cognito provider for Laravel Authentication",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["laravel", "cognito", "aws", "authentication"],
+  "authors": [
+    {
+      "name": "Marco Deleu",
+      "email": "deleugyn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "ext-json": "*",
+    "bref/bref": "^0.5.15",
+    "illuminate/contracts": "^7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0",
+  },
+  "autoload": {
+    "psr-4": {
+      "CustomerGauge\\Bref\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\CustomerGauge\\Bref\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CustomerGauge\\Bref\\LaravelBrefServiceProvider"
+      ]
+    }
+  }
+}
