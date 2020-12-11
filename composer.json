@@ -13,7 +13,7 @@
   "require": {
     "php": "^7.3",
     "ext-json": "*",
-    "bref/bref": "^0.5.15",
+    "bref/bref": "^0.5.15 || ^1.0",
     "illuminate/contracts": ">=5.8"
   },
   "require-dev": {
