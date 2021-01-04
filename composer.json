@@ -13,7 +13,7 @@
   "require": {
     "php": ">=7.3",
     "ext-json": "*",
-    "bref/bref": "^0.5.15 || ^1.0",
+    "bref/bref": "^0.5.29 || ^1.0",
     "illuminate/contracts": ">=5.8"
   },
   "require-dev": {
@@ -30,11 +30,5 @@
         "CustomerGauge\\Bref\\LaravelBrefServiceProvider"
       ]
     }
-  },
-  "bin": [
-    "handlers/invoke.php",
-    "handlers/queue.php",
-    "handlers/request.php",
-    "handlers/pipeline.php"
-  ]
+  }
 }

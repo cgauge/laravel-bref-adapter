@@ -34,6 +34,8 @@ final class SqsHandler implements Handler
 
     public function handle($event, Context $context): void
     {
+        $this->container->instance(Context::class, $context);
+
         $input = new SqsEvent($event);
 
         $job = new LambdaJob($this->container, $input->getRecords()[0]);
