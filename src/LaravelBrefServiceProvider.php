@@ -3,6 +3,7 @@
 namespace CustomerGauge\Bref;
 
 use Aws\CodePipeline\CodePipelineClient;
+use Bref\Context\Context;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 
@@ -30,6 +31,21 @@ final class LaravelBrefServiceProvider extends ServiceProvider
                 'version' => '2015-07-09',
                 'region' => $this->app->get('AWS_REGION'),
             ]);
+        });
+
+        $this->app->bind(Context::class, function () {
+            if (isset($_SERVER['LAMBDA_INVOCATION_CONTEXT'])) {
+                $lambdaContext = json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'], true);
+            } else {
+                $lambdaContext = [];
+            }
+
+            return new Context(
+                $lambdaContext['awsRequestId'] ?? '',
+                $lambdaContext['deadlineMs'] ?? '',
+                $lambdaContext['invokedFunctionArn'] ?? '',
+                $lambdaContext['traceId'] ?? '',
+            );
         });
     }
 }
