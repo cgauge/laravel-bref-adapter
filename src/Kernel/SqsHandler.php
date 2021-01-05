@@ -2,10 +2,10 @@
 
 namespace CustomerGauge\Bref\Kernel;
 
-use CustomerGauge\Bref\Queue\LambdaJob;
 use Bref\Context\Context;
 use Bref\Event\Handler;
 use Bref\Event\Sqs\SqsEvent;
+use CustomerGauge\Bref\Queue\LambdaJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Console\Kernel;
