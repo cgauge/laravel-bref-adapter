@@ -8,7 +8,11 @@ use Bref\Event\Sqs\SqsEvent;
 use CustomerGauge\Bref\Queue\LambdaJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Console\Kernel;
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 use Throwable;
 
 final class SqsHandler implements Handler
@@ -34,18 +38,31 @@ final class SqsHandler implements Handler
 
     public function handle($event, Context $context): void
     {
-        $this->container->instance(Context::class, $context);
-
         $input = new SqsEvent($event);
 
         $job = new LambdaJob($this->container, $input->getRecords()[0]);
 
+        $this->container->instance(Context::class, $context);
+
+        $this->container->instance(LambdaJob::class, $job);
+
+        $this->dispatcher()->dispatch(new JobProcessing('lambda', $job));
+
         try {
             $job->fire();
+
+            $this->dispatcher()->dispatch(new JobProcessed('lambda', $job));
         } catch (Throwable $e) {
             $this->exception->report($e);
 
+            $this->dispatcher()->dispatch(new JobExceptionOccurred('lambda', $job, $e));
+
             throw $e;
         }
+    }
+
+    private function dispatcher(): Dispatcher
+    {
+        return $this->dispatcher ??= $this->container->make(Dispatcher::class);
     }
 }
