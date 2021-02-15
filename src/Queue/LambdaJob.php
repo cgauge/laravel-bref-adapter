@@ -20,7 +20,7 @@ class LambdaJob extends Job implements JobContract
 
     public function getJobId()
     {
-        $this->job->getMessageId();
+        return $this->job->getMessageId();
     }
 
     public function getRawBody()

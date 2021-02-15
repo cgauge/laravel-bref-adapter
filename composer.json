@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "ext-json": "*",
     "bref/bref": "^0.5.29 || ^1.0",
     "illuminate/contracts": ">=5.8"
