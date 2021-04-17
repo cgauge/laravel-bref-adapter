@@ -24,6 +24,9 @@ final class SqsHandler implements Handler
     /** @var ExceptionHandler  */
     private $exception;
 
+    /** @var Dispatcher */
+    private $dispatcher;
+
     public function __construct(Kernel $kernel, Container $container)
     {
         $this->kernel = $kernel;
@@ -63,6 +66,12 @@ final class SqsHandler implements Handler
 
     private function dispatcher(): Dispatcher
     {
-        return $this->dispatcher ??= $this->container->make(Dispatcher::class);
+        if ($this->dispatcher) {
+            return $this->dispatcher;
+        }
+
+        $this->dispatcher = $this->container->make(Dispatcher::class);
+
+        return $this->dispatcher;
     }
 }
