@@ -28,6 +28,7 @@ class StorageDirectories
             self::PATH.'/cache',
             self::PATH.'/framework/cache',
             self::PATH.'/framework/views',
+            self::PATH.'/framework/sessions',
         ];
 
         foreach ($directories as $directory) {
