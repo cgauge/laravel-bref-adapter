@@ -57,7 +57,7 @@ final class SqsHandler implements Handler
 
             $this->dispatcher()->dispatch(new JobProcessed('lambda', $job));
         } catch (Throwable $e) {
-            $exception = new Exception('[' . get_class($e) . '] ' . $e->getMessage(), $e->getCode(), $e);
+            $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode(), $e);
 
             $this->exception->report($exception);
 
