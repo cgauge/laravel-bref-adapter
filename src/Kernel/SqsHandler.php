@@ -6,6 +6,7 @@ use Bref\Context\Context;
 use Bref\Event\Handler;
 use Bref\Event\Sqs\SqsEvent;
 use CustomerGauge\Bref\Queue\LambdaJob;
+use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -21,7 +22,7 @@ final class SqsHandler implements Handler
 
     private $container;
 
-    /** @var ExceptionHandler  */
+    /** @var ExceptionHandler */
     private $exception;
 
     /** @var Dispatcher */
@@ -56,7 +57,9 @@ final class SqsHandler implements Handler
 
             $this->dispatcher()->dispatch(new JobProcessed('lambda', $job));
         } catch (Throwable $e) {
-            $this->exception->report($e);
+            $exception = new Exception('[' . get_class($e) . '] ' . $e->getMessage(), $e->getCode(), $e);
+
+            $this->exception->report($exception);
 
             $this->dispatcher()->dispatch(new JobExceptionOccurred('lambda', $job, $e));
 
