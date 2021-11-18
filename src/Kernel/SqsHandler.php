@@ -6,6 +6,7 @@ use Bref\Context\Context;
 use Bref\Event\Handler;
 use Bref\Event\Sqs\SqsEvent;
 use CustomerGauge\Bref\Queue\LambdaJob;
+use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -21,7 +22,7 @@ final class SqsHandler implements Handler
 
     private $container;
 
-    /** @var ExceptionHandler  */
+    /** @var ExceptionHandler */
     private $exception;
 
     /** @var Dispatcher */
@@ -56,7 +57,13 @@ final class SqsHandler implements Handler
 
             $this->dispatcher()->dispatch(new JobProcessed('lambda', $job));
         } catch (Throwable $e) {
-            $this->exception->report($e);
+            // Here we're wrapping whatever exception we get into a base exception because Laravel ignores some exceptions
+            // by using internalDontReport on the ExceptionHandler class. However, we're a background process here and
+            // it is better to report everything for visibility. We can't disable the internalDontReport without
+            // installing the whole `laravel/framework` because it's an `\Illuminate\Foundation` class.
+            $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode(), $e);
+
+            $this->exception->report($exception);
 
             $this->dispatcher()->dispatch(new JobExceptionOccurred('lambda', $job, $e));
 
