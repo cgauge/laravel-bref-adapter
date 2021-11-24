@@ -61,7 +61,7 @@ final class SqsHandler implements Handler
             // by using internalDontReport on the ExceptionHandler class. However, we're a background process here and
             // it is better to report everything for visibility. We can't disable the internalDontReport without
             // installing the whole `laravel/framework` because it's an `\Illuminate\Foundation` class.
-            $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode(), $e);
+            $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), (int) $e->getCode(), $e);
 
             $this->exception->report($exception);
 
