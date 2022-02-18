@@ -12,6 +12,8 @@ final class LaravelBrefServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerAwsCodepipelineClient();
+
+        $this->brefContext();
     }
 
     private function registerAwsCodepipelineClient()
@@ -32,6 +34,13 @@ final class LaravelBrefServiceProvider extends ServiceProvider
                 'region' => $this->app->get('AWS_REGION'),
             ]);
         });
+    }
+
+    private function brefContext(): void
+    {
+        if ($this->app->has(Context::class)) {
+            return;
+        }
 
         $this->app->bind(Context::class, function () {
             if (isset($_SERVER['LAMBDA_INVOCATION_CONTEXT'])) {
@@ -42,7 +51,7 @@ final class LaravelBrefServiceProvider extends ServiceProvider
 
             return new Context(
                 $lambdaContext['awsRequestId'] ?? '',
-                $lambdaContext['deadlineMs'] ?? '',
+                $lambdaContext['deadlineMs'] ?? 0,
                 $lambdaContext['invokedFunctionArn'] ?? '',
                 $lambdaContext['traceId'] ?? '',
             );

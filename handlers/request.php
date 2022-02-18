@@ -1,11 +1,14 @@
 <?php
 
+use Bref\Context\Context;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 $app = require __DIR__ . '/boot.php';
 
-return function (array $event) use ($app) {
+return function (array $event, Context $context) use ($app) {
     $kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
+
+    $app->instance(Context::class, $context);
 
     if (! isset($event['LARAVEL_ROUTE'])) {
         throw new HttpException(404, 'The LARAVEL_ROUTE variable was not specified.');
