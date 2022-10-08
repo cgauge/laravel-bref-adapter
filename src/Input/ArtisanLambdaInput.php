@@ -6,9 +6,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 final class ArtisanLambdaInput extends ArgvInput
 {
-    public function __construct()
+    public function __construct(array $event)
     {
-        $input = $this->input();
+        $input = $this->input($event);
 
         parent::__construct($input);
     }
@@ -18,8 +18,12 @@ final class ArtisanLambdaInput extends ArgvInput
      * Environment Variable. This variable should always be set by a serverless.yaml
      * template when defining a PHP cli command.
      */
-    private function input()
+    private function input(array $event)
     {
+        if (isset($event['ARTISAN_COMMAND'])) {
+            return $this->parseInput($event['ARTISAN_COMMAND']);
+        }
+
         if (isset($_ENV['ARTISAN_COMMAND'])) {
             return $this->parseInput($_ENV['ARTISAN_COMMAND']);
         }

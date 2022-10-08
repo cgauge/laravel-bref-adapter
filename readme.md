@@ -14,4 +14,20 @@ This library provides a [Bref Adapter](https://bref.sh) for Laravel
 composer require customergauge/bref
 ```
 
+# Configuration
+
+We need to add `\CustomerGauge\Bref\Helpers\StorageDirectories::create($app);` to the `bootstrap/app.php` file.
+This will ensure that the storage directories are created before the application is booted.
+
+The following environment variables will configure Laravel to use the appropriate folders:
+
+```dotenv
+APP_SERVICES_CACHE: /tmp/laravel-bref-adapter/storage/cache/services.php
+APP_PACKAGES_CACHE: /tmp/laravel-bref-adapter/storage/cache/packages.php
+APP_ROUTES_CACHE: /tmp/laravel-bref-adapter/storage/cache/routes.php
+VIEW_COMPILED_PATH: /tmp/laravel-bref-adapter/storage/framework/views
+```
+
 # Usage
+
+
