@@ -20,7 +20,7 @@ return function (array $event) use ($app) {
     });
 
     $status = $kernel->handle(
-        $input = new \CustomerGauge\Bref\Input\ArtisanLambdaInput,
+        $input = new \CustomerGauge\Bref\Input\ArtisanLambdaInput($event),
         new \Symfony\Component\Console\Output\ConsoleOutput
     );
 
