@@ -5,6 +5,7 @@ namespace CustomerGauge\Bref\Kernel;
 use Bref\Context\Context;
 use Bref\Event\Handler;
 use Bref\Event\Sqs\SqsEvent;
+use CustomerGauge\Bref\AlwaysReportExceptionHandler;
 use CustomerGauge\Bref\Queue\LambdaJob;
 use Exception;
 use Illuminate\Container\Container;
@@ -61,9 +62,17 @@ final class SqsHandler implements Handler
             // by using internalDontReport on the ExceptionHandler class. However, we're a background process here and
             // it is better to report everything for visibility. We can't disable the internalDontReport without
             // installing the whole `laravel/framework` because it's an `\Illuminate\Foundation` class.
-            $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), (int) $e->getCode(), $e);
 
-            $this->exception->report($exception);
+            if ($this->exception instanceof AlwaysReportExceptionHandler) {
+                $this->exception->alwaysReport($e);
+            } else {
+                // Originally we tried this way to bypass the internalDontReport, but we end up losing the backtrace.
+                // We're keeping this behavior for backward compatibility, but the preferred approach is to implement
+                // the AlwaysReportExceptionHandler.
+                $exception = new Exception('[laravel-bref-adapter-error] [' . get_class($e) . '] ' . $e->getMessage(), (int) $e->getCode(), $e);
+
+                $this->exception->report($exception);
+            }
 
             $this->dispatcher()->dispatch(new JobExceptionOccurred('lambda', $job, $e));
 
