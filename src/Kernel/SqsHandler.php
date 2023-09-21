@@ -9,9 +9,9 @@ use CustomerGauge\Bref\AlwaysReportExceptionHandler;
 use CustomerGauge\Bref\Queue\LambdaJob;
 use Exception;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Foundation\Console\Kernel;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -47,6 +47,11 @@ final class SqsHandler implements Handler
 
         $job = new LambdaJob($this->container, $input->getRecords()[0]);
 
+        $this->run($job, $context);
+    }
+
+    public function run(LambdaJob $job, Context $context): void
+    {
         $this->container->instance(Context::class, $context);
 
         $this->container->instance(LambdaJob::class, $job);
