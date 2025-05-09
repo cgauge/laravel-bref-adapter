@@ -21,9 +21,9 @@ final class SqsHandlerTesting
     public function dispatchSqsJob($job, bool $suppressException = false)
     {
         $queue = new class extends Queue {
-            public function createPayload($job, $queue, $data = '')
+            public function createPayload($job, $queue, $data = '', $delay = null)
             {
-                return parent::createPayload($job, $queue, $data);
+                return parent::createPayload($job, $queue, $data, $delay);
             }
         };
 
