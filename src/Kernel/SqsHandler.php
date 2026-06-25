@@ -41,7 +41,7 @@ final class SqsHandler implements Handler
         $this->kernel->bootstrap();
     }
 
-    public function handle($event, Context $context): void
+    public function handle(mixed $event, Context $context): void
     {
         $input = new SqsEvent($event);
 
