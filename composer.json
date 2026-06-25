@@ -11,9 +11,9 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=8.2",
     "ext-json": "*",
-    "bref/bref": "^0.5.29 || ^1.0 || ^2.0",
+    "bref/bref": "^0.5.29 || ^1.0 || ^2.0 || ^3.0",
     "illuminate/contracts": ">=12.11",
     "illuminate/queue": ">=12.11"
   },
